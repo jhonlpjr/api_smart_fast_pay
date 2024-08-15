@@ -41,8 +41,8 @@ class PaymentMethodValidator extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'optional|string|max:255',
-            'slug' => 'oprional|email|max:255',
+            'name' => 'nulleable|string|max:255',
+            'slug' => 'nulleable|email|max:255',
         ];
     }
 

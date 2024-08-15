@@ -25,5 +25,6 @@ class PaymentMethodModel extends Model
         'id',
         'name',
         'slug',
+        'commission',
     ];
 }

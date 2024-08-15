@@ -22,6 +22,13 @@ class UserMysqlRepository implements UserRepository {
         return $userModel;
     }
 
+    public function update(int $id, User $user) {
+        $userModel = UserModel::find($id);
+        $userModel->fill($user->toArray());
+        $userModel->save();
+        return $userModel;
+    }
+
     public function delete(int $id) {
         return UserModel::destroy([$id]);
     }

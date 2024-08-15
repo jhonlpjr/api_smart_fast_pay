@@ -15,10 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('names')->nullable();
             $table->string('lastnames')->nullable();
+            $table->string('identity_document')->unique();
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->float('balance')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -43,6 +43,7 @@ class PaymentMethodValidator extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255',
+            'commision' => 'nullable|numeric',
         ];
     }
 
@@ -55,6 +56,7 @@ class PaymentMethodValidator extends FormRequest
             'slug.required' => 'Slug is required.',
             'slug.string' => 'Slug must be string.',
             'slug.max' => 'Slug cannot be longer than 255 characters.',
+            'slug.numeric' => 'Commision  must be a number.',
         ];
     }
 }
