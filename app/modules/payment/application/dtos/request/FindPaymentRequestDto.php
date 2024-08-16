@@ -10,13 +10,13 @@ use Illuminate\Validation\ValidationException;
 class FindPaymentRequestDto extends Payment
 {
     private array $receivedRequest;
-    private PaymentValidator $validator;
+    private FindPaymentValidator $validator;
 
     public function __construct(array $receivedRequest)
     {
         parent::__construct($receivedRequest);
         $this->receivedRequest = $receivedRequest;
-        $this->validator = new PaymentValidator();
+        $this->validator = new FindPaymentValidator();
         $this->validate();
     }
 
@@ -30,7 +30,7 @@ class FindPaymentRequestDto extends Payment
     }
 }
 
-class PaymentValidator extends FormRequest
+class FindPaymentValidator extends FormRequest
 {
     public function authorize()
     {

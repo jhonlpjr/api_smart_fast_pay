@@ -23,6 +23,43 @@ class PaymentMethodController extends Controller
         $this->paymentMethodService = $paymentMethodService;
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/payment-method/create",
+     *     summary="New payment method register",
+     *     tags={"Payment Methods"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", example="Pix"),
+     *             @OA\Property(property="slug", type="string", example="pix"),
+     *             @OA\Property(property="commission", type="number", example=0.05),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Ok",
+     *          @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="object"),
+     *             @OA\Property(property="statusCode", type="integer"),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="object"),
+     *             @OA\Property(property="statusCode", type="integer"),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     security={{"bearerAuth":{}}}
+     * )
+     */
     public function create(Request $request)
     {
         try {
@@ -71,6 +108,41 @@ class PaymentMethodController extends Controller
         }
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/payment-method/find/{id}",
+     *     summary="Search of payment method by id",
+     *     tags={"Payment Methods"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=false,
+     *         @OA\Schema(type="integer"),
+     *         description="Name of customer"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Ok",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="object"),
+     *             @OA\Property(property="statusCode", type="integer"),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="object"),
+     *             @OA\Property(property="statusCode", type="integer"),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     security={{"bearerAuth":{}}}
+     * )
+     */
     public function findOne($id)
     {
         try {

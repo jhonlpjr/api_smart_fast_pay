@@ -17,6 +17,27 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * @OA\Info(
+ *     title="Smart Fast Pay - Payment Processing API",
+ *     version="1.0.0",
+ *     description="Smart Fast Pay - Payment Processing API",
+ *     @OA\Contact(
+ *         email="jhonlpjr@gmail.com"
+ *     ),
+ *     @OA\License(
+ *         name="Apache 2.0",
+ *         url="http://www.apache.org/licenses/LICENSE-2.0.html"
+ *     )
+ * )
+ * 
+ * @OA\SecurityScheme(
+ *     securityScheme="bearerAuth",
+ *     type="http",
+ *     scheme="bearer",
+ *     bearerFormat="JWT"
+ * )
+ */
 class PaymentController extends Controller
 {
     protected PaymentService $paymentService;
@@ -26,6 +47,46 @@ class PaymentController extends Controller
         $this->paymentService = $paymentService;
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/payment/create",
+     *     summary="New payment register",
+     *     tags={"Payments"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="customer_name", type="string", example="Ran"),
+     *             @OA\Property(property="cpf", type="string", example="11223344"),
+     *             @OA\Property(property="description", type="string", example="description"),
+     *             @OA\Property(property="value", type="number", format="float", example=200),
+     *             @OA\Property(property="payment_method", type="string", example="pix"),
+     *             @OA\Property(property="payment_date", type="string", example="2024-01-01"),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Ok",
+     *          @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="object"),
+     *             @OA\Property(property="statusCode", type="integer"),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="object"),
+     *             @OA\Property(property="statusCode", type="integer"),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     security={{"bearerAuth":{}}}
+     * )
+     */
     public function create(Request $request)
     {
         try {
@@ -49,10 +110,45 @@ class PaymentController extends Controller
         } catch (ValidationException $e) {
             // Manejar los errores de validación...
             $response = new ErrorResponseDto(['data' => $e->errors(), 'message' => 'Validation error', 'statusCode' => Response::HTTP_BAD_REQUEST]);
-            return response()->json($e->errors(), 422);
+            return response()->json($response, $response->statusCode);
         }
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/payment/delete/{id}",
+     *     summary="Delete payment",
+     *     tags={"Payments"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer"),
+     *         description="ID of the payment to delete"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Ok",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="object"),
+     *             @OA\Property(property="statusCode", type="integer"),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="object"),
+     *             @OA\Property(property="statusCode", type="integer"),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     security={{"bearerAuth":{}}}
+     * )
+     */
     public function delete($id)
     {
         try {
@@ -70,10 +166,59 @@ class PaymentController extends Controller
         } catch (ValidationException $e) {
             // Manejar los errores de validación...
             $response = new ErrorResponseDto(['data' => $e->errors(), 'message' => 'Validation error', 'statusCode' => Response::HTTP_BAD_REQUEST]);
-            return response()->json($e->errors(), 422);
+            return response()->json($response, $response->statusCode);
         }
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/payment",
+     *     summary="Search of payments",
+     *     tags={"Payments"},
+     *     @OA\Parameter(
+     *         name="customer_name",
+     *         in="query",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *         description="Name of customer"
+     *     ),
+     *     @OA\Parameter(
+     *         name="payment_method",
+     *         in="query",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *         description="Method of payment"
+     *     ),
+     *     @OA\Parameter(
+     *         name="status",
+     *         in="query",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *         description="Status of payment"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Ok",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="object"),
+     *             @OA\Property(property="statusCode", type="integer"),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="object"),
+     *             @OA\Property(property="statusCode", type="integer"),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     security={{"bearerAuth":{}}}
+     * )
+     */
     public function find(Request $request)
     {
         try {
@@ -94,10 +239,45 @@ class PaymentController extends Controller
         } catch (ValidationException $e) {
             // Manejar los errores de validación...
             $response = new ErrorResponseDto(['data' => $e->errors(), 'message' => 'Validation error', 'statusCode' => Response::HTTP_BAD_REQUEST]);
-            return response()->json($e->errors(), 422);
+            return response()->json($response, $response->statusCode);
         }
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/payment/find/{id}",
+     *     summary="Search of payment by id",
+     *     tags={"Payments"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=false,
+     *         @OA\Schema(type="integer"),
+     *         description="Name of customer"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Ok",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="object"),
+     *             @OA\Property(property="statusCode", type="integer"),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="object"),
+     *             @OA\Property(property="statusCode", type="integer"),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     security={{"bearerAuth":{}}}
+     * )
+     */
     public function findOne($id)
     {
         try {
@@ -115,10 +295,46 @@ class PaymentController extends Controller
         } catch (ValidationException $e) {
             // Manejar los errores de validación...
             $response = new ErrorResponseDto(['data' => $e->errors(), 'message' => 'Validation error', 'statusCode' => Response::HTTP_BAD_REQUEST]);
-            return response()->json($e->errors(), 422);
+            return response()->json($response, $response->statusCode);
         }
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/payment/process",
+     *     summary="Process payment",
+     *     tags={"Payments"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="payment_id", type="number", format="integer",
+     *                 example=1),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Ok",
+     *          @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="object"),
+     *             @OA\Property(property="statusCode", type="integer"),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="object"),
+     *             @OA\Property(property="statusCode", type="integer"),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     security={{"bearerAuth":{}}}
+     * )
+     */
     public function process(Request $request)
     {
         try {
@@ -139,7 +355,7 @@ class PaymentController extends Controller
         } catch (ValidationException $e) {
             // Manejar los errores de validación...
             $response = new ErrorResponseDto(['data' => $e->errors(), 'message' => 'Validation error', 'statusCode' => Response::HTTP_BAD_REQUEST]);
-            return response()->json($e->errors(), 422);
+            return response()->json($response, $response->statusCode);
         }
     }
 }

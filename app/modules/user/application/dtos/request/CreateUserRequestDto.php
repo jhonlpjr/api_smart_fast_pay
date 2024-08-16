@@ -46,6 +46,8 @@ class CreateUserValidator extends FormRequest
             'names' => 'nulleable|string|max:255',
             'lastnames' => 'nulleable|string|max:255',
             'password' => 'required|string|min:8',
+            'identity_document' => 'required|string|min:8|max:20',
+            'balance' => 'nulleable|numeric',
         ];
     }
 
@@ -65,6 +67,11 @@ class CreateUserValidator extends FormRequest
             'password.required' => 'The password is required.',
             'password.string' => 'The password must be a string.',
             'password.min' => 'The password must be at least 8 characters long.',
+            'identity_document.required' => 'Identity Document is required.',
+            'identity_document.string' => 'Identity Document must be string.',
+            'identity_document.minx' => 'Identity Document cannot be shorter than 8 characters.',
+            'identity_document.max' => 'Identity Document cannot be longer than 20 characters.',
+            'balance.numeric' => 'Balance must be a number.',
         ];
     }
 }

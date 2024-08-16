@@ -25,10 +25,10 @@ class LoginUserUsecase
         $this->jwtSecret = 'secret';
     }
 
-    public function execute(string $email, string $password): string
+    public function execute(string $username, string $password): string
     {
         try {
-            $user = $this->userRepository->findByUserName($email);
+            $user = $this->userRepository->findByUserName($username);
 
             if (!$user || !password_verify($password, $user->password)) {
                 throw new Exception('Invalid credentials');
@@ -41,10 +41,10 @@ class LoginUserUsecase
                 'exp' => time() + 3600 // Expiration time (1 hour)
             ];
             $token = JWT::encode($payload, $this->jwtSecret, 'HS256');
-            TokenModel::create([
-                'user_id' => $user->id,
-                'token' => $token,
-            ]);
+            TokenModel::updateOrCreate(
+                ['user_id' => $user->id], 
+                ['token' => $token] 
+            );
             return $token;
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
