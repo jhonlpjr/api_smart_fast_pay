@@ -1,31 +1,31 @@
 version: '3.8'
 
 services:
-  api-smart-fast-pay:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: laravel-app-image
-    container_name: api-smart-fast-pay
-    restart: unless-stopped
-    working_dir: /var/www/
-    volumes:
-      - ./:/var/www
-      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
-    networks:
-      - app-network
-    ports:
-      - "8000:80"
-    environment:
-      - APP_ENV=local
-      - APP_DEBUG=true
-      - APP_KEY=base64:YOUR_APP_KEY_HERE
-      - DB_CONNECTION=mysql
-      - DB_HOST=db-smart-fast-pay
-      - DB_PORT=3306
-      - DB_DATABASE=smart_fast_pay
-      - DB_USERNAME=admin
-      - DB_PASSWORD=123456
+  # api-smart-fast-pay:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   image: laravel-app-image
+  #   container_name: api-smart-fast-pay
+  #   restart: unless-stopped
+  #   working_dir: /var/www/
+  #   volumes:
+  #     - ./:/var/www
+  #     - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+  #   networks:
+  #     - app-network
+  #   ports:
+  #     - "8000:80"
+  #   environment:
+  #     - APP_ENV=local
+  #     - APP_DEBUG=true
+  #     - APP_KEY=base64:YOUR_APP_KEY_HERE
+  #     - DB_CONNECTION=mysql
+  #     - DB_HOST=db-smart-fast-pay
+  #     - DB_PORT=3306
+  #     - DB_DATABASE=smart_fast_pay
+  #     - DB_USERNAME=admin
+  #     - DB_PASSWORD=123456
 
   db-smart-fast-pay:
     image: mysql:5.7
