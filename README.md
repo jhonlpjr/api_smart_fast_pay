@@ -54,8 +54,8 @@ DB_DATABASE=smart_fast_pay
 DB_USERNAME=admin
 DB_PASSWORD=123456
 ```
-## Notas
-Si desean, se puede modificar a voluntad y, si fuera el caso, modificar en el docker-compose.yml y en el archivo [.env]
+## Notes
+If you wish, you can modify it at will and, if necessary, modify it in the docker-compose.yml and in the [.env] file.
 
 ### 4. Install Project Dependencies
 
