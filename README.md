@@ -95,6 +95,12 @@ php artisan l5-swagger:generate
 http://localhost:8000/api/documentation
 ```
 
+## Default User for login in API
+```bash
+username: jox
+password: 12345678
+```
+
 ## Authors
 
 - [@jon.snow](https://github.com/jhonlpjr)
