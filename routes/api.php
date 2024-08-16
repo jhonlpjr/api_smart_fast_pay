@@ -15,7 +15,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::middleware([VerifyToken::class])->group(function () {
+    //USERS
     Route::post('/users/create', [UserController::class, 'create']);
+    Route::get('/users/balance/{id}', [UserController::class, 'getBalance']);
     //PAYMENT
     Route::post('/payment/create', [PaymentController::class, 'create']);
     Route::delete('/payment/delete/{id}', [PaymentController::class, 'delete']);

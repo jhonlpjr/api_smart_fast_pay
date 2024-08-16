@@ -253,7 +253,7 @@ class PaymentController extends Controller
      *         in="path",
      *         required=false,
      *         @OA\Schema(type="integer"),
-     *         description="Name of customer"
+     *         description="Payment Id"
      *     ),
      *     @OA\Response(
      *         response=200,

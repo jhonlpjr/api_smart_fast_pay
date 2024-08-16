@@ -9,6 +9,7 @@ use app\modules\user\application\dtos\request\LoginUserRequestDto;
 use app\modules\user\application\services\UserService;
 use app\shared\dtos\api\response\CreateResponseDto;
 use app\shared\dtos\api\response\ErrorResponseDto;
+use app\shared\dtos\api\response\ResponseDto;
 use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -88,7 +89,7 @@ class UserController extends Controller
         }
     }
 
-     /**
+    /**
      * @OA\Post(
      *     path="/api/users/login",
      *     summary="Login ",
@@ -161,6 +162,175 @@ class UserController extends Controller
                 'message' => 'Invalid credentials',
                 'statusCode' => Response::HTTP_UNAUTHORIZED
             ]);
+            return response()->json($response, $response->statusCode);
+        }
+    }
+
+
+    /**
+     * @OA\Get(
+     *     path="/api/users/balance/{id}",
+     *     summary="Get balance of user by id",
+     *     tags={"Users"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=false,
+     *         @OA\Schema(type="integer"),
+     *         description="ID of user"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Ok",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="object"),
+     *             @OA\Property(property="statusCode", type="integer"),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="object"),
+     *             @OA\Property(property="statusCode", type="integer"),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     security={{"bearerAuth":{}}}
+     * )
+     */
+    public function getBalance($id)
+    {
+        try {
+
+            // Obtén todos los datos del cuerpo de la solicitud
+            //$requestBody = $request->all();
+
+            // Log de entrada de la solicitud
+            Log::info('Solicitud recibida en getBalance', ['id' => $id]);
+
+            $userBalance = $this->userService->getUserBalance($id);
+
+            $response = new ResponseDto(['data' => $userBalance]);
+            return response()->json($response, $response->statusCode);
+        } catch (ValidationException $e) {
+            // Manejar los errores de validación...
+            $response = new ErrorResponseDto(['data' => $e->errors(), 'message' => 'Validation error', 'statusCode' => Response::HTTP_BAD_REQUEST]);
+            return response()->json($response, $response->statusCode);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/users/find/{id}",
+     *     summary="Get user by id",
+     *     tags={"Users"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=false,
+     *         @OA\Schema(type="integer"),
+     *         description="ID of user"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Ok",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="object"),
+     *             @OA\Property(property="statusCode", type="integer"),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="object"),
+     *             @OA\Property(property="statusCode", type="integer"),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     security={{"bearerAuth":{}}}
+     * )
+     */
+    public function findOne($id)
+    {
+        try {
+
+            // Obtén todos los datos del cuerpo de la solicitud
+            //$requestBody = $request->all();
+
+            // Log de entrada de la solicitud
+            Log::info('Solicitud recibida en getBalance', ['id' => $id]);
+
+            $userBalance = $this->userService->findUserById($id);
+
+            $response = new ResponseDto(['data' => $userBalance]);
+            return response()->json($response, $response->statusCode);
+        } catch (ValidationException $e) {
+            // Manejar los errores de validación...
+            $response = new ErrorResponseDto(['data' => $e->errors(), 'message' => 'Validation error', 'statusCode' => Response::HTTP_BAD_REQUEST]);
+            return response()->json($response, $response->statusCode);
+        }
+    }
+
+     /**
+     * @OA\Delete(
+     *     path="/api/users/delete/{id}",
+     *     summary="Get user by id",
+     *     tags={"Users"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=false,
+     *         @OA\Schema(type="integer"),
+     *         description="ID of user"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Ok",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="object"),
+     *             @OA\Property(property="statusCode", type="integer"),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="object"),
+     *             @OA\Property(property="statusCode", type="integer"),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     security={{"bearerAuth":{}}}
+     * )
+     */
+    public function delete($id)
+    {
+        try {
+
+            // Obtén todos los datos del cuerpo de la solicitud
+            //$requestBody = $request->all();
+
+            // Log de entrada de la solicitud
+            Log::info('Solicitud recibida en getBalance', ['id' => $id]);
+
+            $userBalance = $this->userService->deleteUser($id);
+
+            $response = new ResponseDto(['data' => $userBalance]);
+            return response()->json($response, $response->statusCode);
+        } catch (ValidationException $e) {
+            // Manejar los errores de validación...
+            $response = new ErrorResponseDto(['data' => $e->errors(), 'message' => 'Validation error', 'statusCode' => Response::HTTP_BAD_REQUEST]);
             return response()->json($response, $response->statusCode);
         }
     }
