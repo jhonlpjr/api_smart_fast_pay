@@ -43,11 +43,11 @@ class CreateUserValidator extends FormRequest
         return [
             'username' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'names' => 'nulleable|string|max:255',
-            'lastnames' => 'nulleable|string|max:255',
+            'names' => 'nullable|string|max:255',
+            'lastnames' => 'nullable|string|max:255',
             'password' => 'required|string|min:8',
             'identity_document' => 'required|string|min:8|max:20',
-            'balance' => 'nulleable|numeric',
+            'balance' => 'nullable|numeric',
         ];
     }
 

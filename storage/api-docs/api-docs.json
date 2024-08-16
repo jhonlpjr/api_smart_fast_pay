@@ -177,13 +177,13 @@
                 ]
             }
         },
-        "/api/payment": {
+        "/api/payment/find": {
             "get": {
                 "tags": [
                     "Payments"
                 ],
                 "summary": "Search of payments",
-                "operationId": "a212ce83604b64818852dbc6ef86822f",
+                "operationId": "495dc8fa376d32e0de90508a0e795499",
                 "parameters": [
                     {
                         "name": "customer_name",

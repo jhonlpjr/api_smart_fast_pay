@@ -172,7 +172,7 @@ class PaymentController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/payment",
+     *     path="/api/payment/find",
      *     summary="Search of payments",
      *     tags={"Payments"},
      *     @OA\Parameter(
